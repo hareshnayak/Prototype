@@ -28,7 +28,6 @@ class Kalakar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         title: Text(
           "Kalakar",
           style: TextStyle(color: Colors.white, fontSize: 30.0),
@@ -40,82 +39,18 @@ class Kalakar extends StatelessWidget {
 //           key: _scaffoldKey,
       body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 80,
-                      ),
-                    ],
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 130,
+                child: Center(
+                  child: Text(
+                    'Slider Corousel',
+                    style: TextStyle(color: Colors.black),
                   ),
-                ),
-                SizedBox(
-                  height: 30.0,
-                  child: Container(
-                    color: Colors.red,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-                Positioned(
-                  top: 5,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0, 1.0), //(x,y)
-                              blurRadius: 6.0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(25.0),
-                          border: Border.all(
-                              color: Colors.grey.withOpacity(0.4), width: 1.0),
-                          color: Colors.white),
-                      child: Row(
-                        children: [
-                          SizedBox(width: 20),
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: "Search",
-                                enabledBorder: new UnderlineInputBorder(
-                                  borderSide:
-                                      new BorderSide(color: Colors.transparent),
-                                ),
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.search,
-                              color: Colors.red,
-                            ),
-                            onPressed: () {
-                              print("your menu action here");
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 130,
-              child: Center(
-                child: Text(
-                  'Slider Corousel',
-                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),
@@ -220,7 +155,15 @@ class Kalakar extends StatelessWidget {
                           fontWeight: FontWeight.bold)),
                 ),
               ),
-            )
+            ),
+           //navigation bar starts
+            SizedBox(height: 10),
+            Padding(padding: EdgeInsets.fromLTRB(0,5,0,0),child: Container(
+              height: 50,
+              color: Colors.red,
+              width: MediaQuery.of(context).size.width,
+            ),),
+            //navigation bar ends
           ],
         ),
       ),
