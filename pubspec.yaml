@@ -40,6 +40,7 @@ dependencies:
   firebase_messaging: 6.0.13
   flutter_local_notifications: 1.4.0
   photo_view: ^0.5.0
+  insta_html_parser: ^0.1.1
 
 dev_dependencies:
   flutter_test:
@@ -58,16 +59,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/img_not_available.jpeg
-    - images/mimi1.gif
-    - images/mimi2.gif
-    - images/mimi3.gif
-    - images/mimi4.gif
-    - images/mimi5.gif
-    - images/mimi6.gif
-    - images/mimi7.gif
-    - images/mimi8.gif
-    - images/mimi9.gif
+    - images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

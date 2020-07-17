@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "648652437228",
+    "firebase_url": "https://zariya-b47aa.firebaseio.com",
+    "project_id": "zariya-b47aa",
+    "storage_bucket": "zariya-b47aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648652437228:android:549d3c718bc5aac32097c9",
+        "android_client_info": {
+          "package_name": "com.hnbrothers.prototype"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648652437228-4ulih562ldl0nrfkogpdocpaekp0bnm4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYb8zFG40xxKqWn5YRbxRqCtlUho9E8ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648652437228-4ulih562ldl0nrfkogpdocpaekp0bnm4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
