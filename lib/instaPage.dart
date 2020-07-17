@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:insta_html_parser/insta_html_parser.dart';
 
-void main() {
-  runApp(InstaParserExampleApp());
-}
-
 class InstaParserExampleApp extends StatefulWidget {
+  final String username;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  InstaParserExampleApp({Key key, this.scaffoldKey}) : super(key: key);
+  InstaParserExampleApp({Key key, this.scaffoldKey, this.username}) : super(key: key);
 
   @override
   _InstaParserExampleAppState createState() => _InstaParserExampleAppState();
@@ -26,7 +23,7 @@ class _InstaParserExampleAppState extends State<InstaParserExampleApp> {
   @override
   void initState() {
     super.initState();
-    _profileUrlController.text = 'https://www.instagram.com/contreirasgustavo/';
+    _profileUrlController.text = 'https://www.instagram.com/${widget.username}/';
     _postUrlController.text = 'https://www.instagram.com/p/BQQrPauBgvn/';
   }
 
@@ -53,7 +50,7 @@ class _InstaParserExampleAppState extends State<InstaParserExampleApp> {
                                   contentPadding: EdgeInsets.only(top: 2.0, bottom: 2.0),
                                   labelText: 'Profile URL',
                                   labelStyle: _textStyleUrl,
-                                  hintText: 'https://www.instagram.com/contreirasgustavo/',
+                                  hintText: 'https://www.instagram.com/${widget.username}/',
                                   hintStyle: TextStyle(color: Colors.grey[500], fontSize: 13)
                               )
                           )
@@ -302,153 +299,153 @@ class _InstaParserExampleAppState extends State<InstaParserExampleApp> {
                     ],
                   ),
 
-                  Container( // Post url input field
-                      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 16.0),
-                      child: Form(
-                          child: TextFormField(
-                              controller: _postUrlController,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(top: 2.0, bottom: 2.0),
-                                  labelText: 'Post URL',
-                                  labelStyle: _textStyleUrl,
-                                  hintText: 'https://www.instagram.com/p/BQQrPauBgvn/',
-                                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 13)
-                              )
-                          )
-                      )
-                  ),
+//                  Container( // Post url input field
+//                      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 16.0),
+//                      child: Form(
+//                          child: TextFormField(
+//                              controller: _postUrlController,
+//                              decoration: InputDecoration(
+//                                  contentPadding: EdgeInsets.only(top: 2.0, bottom: 2.0),
+//                                  labelText: 'Post URL',
+//                                  labelStyle: _textStyleUrl,
+//                                  hintText: 'https://www.instagram.com/p/BQQrPauBgvn/',
+//                                  hintStyle: TextStyle(color: Colors.grey[500], fontSize: 13)
+//                              )
+//                          )
+//                      )
+//                  ),
 
-                  Row( // Photos and video submit button
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-
-                      Container( // Parse photos
-                        width: 160,
-                        padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 16.0),
-                        child: RaisedButton(
-                          child: Text('Get photos', style: _textStyleUrl,),
-                          onPressed: () async {
-
-                            List<Widget> _widgetsList = [];
-                            Map<String, String> photosUrls = await InstaParser.photoUrlsFromPost('${_postUrlController.text}');
-
-                            // Divider
-                            _widgetsList.add(
-                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                    child: Divider(height: 0.0, color: Colors.black)
-                                )
-                            );
-
-                            // Small photo URL
-                            _widgetsList.add(Text('Small photo:', style: _textStyleBold));
-                            _widgetsList.add(
-                                GestureDetector(
-                                    child: Text('${photosUrls['small'] != null ? photosUrls['small'] : ''}', style: _textStyleUrl,),
-                                    onTap: () async {
-                                      setState(() {});
-                                      Clipboard.setData(ClipboardData(text: '${photosUrls['small']}'));
-                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied small size photo url")));
-                                    }
-                                )
-                            );
-                            if (photosUrls['small'] != null) {
-                              _widgetsList.add(
-                                  Image.network(photosUrls['small'])
-                              );
-                            }
-
-                            // Divider
-                            _widgetsList.add(
-                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                    child: Divider(height: 0.0, color: Colors.black)
-                                )
-                            );
-
-                            // Medium photo URL
-                            _widgetsList.add(Text('Medium photo:', style: _textStyleBold));
-                            _widgetsList.add(
-                                GestureDetector(
-                                    child: Text('${photosUrls['medium'] != null ? photosUrls['medium'] : ''}', style: _textStyleUrl,),
-                                    onTap: () async {
-                                      setState(() {});
-                                      Clipboard.setData(ClipboardData(text: '${photosUrls['medium']}'));
-                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied medium size photo url")));
-                                    }
-                                )
-                            );
-                            if (photosUrls['medium'] != null) {
-                              _widgetsList.add(
-                                  Image.network(photosUrls['medium'])
-                              );
-                            }
-
-                            // Divider
-                            _widgetsList.add(
-                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                    child: Divider(height: 0.0, color: Colors.black)
-                                )
-                            );
-
-                            // Large photo URL
-                            _widgetsList.add(Text('Large photo:', style: _textStyleBold));
-                            _widgetsList.add(
-                                GestureDetector(
-                                    child: Text('${photosUrls['large'] != null ? photosUrls['large'] : ''}', style: _textStyleUrl,),
-                                    onTap: () async {
-                                      setState(() {});
-                                      Clipboard.setData(ClipboardData(text: '${photosUrls['large']}'));
-                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied large size photo url")));
-                                    }
-                                )
-                            );
-                            if (photosUrls['large'] != null) {
-                              _widgetsList.add(
-                                  Image.network(photosUrls['large'])
-                              );
-                            }
-
-                            setState(() => _parsedWidgets = _widgetsList);
-                          },
-                        ),
-                      ),
-
-                      Container( // Parse video
-                        width: 128,
-                        padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 16.0),
-                        child: RaisedButton(
-                          child: Text('Get video', style: _textStyleUrl,),
-                          onPressed: () async {
-                            List<Widget> _widgetsList = [];
-                            String _videoUrl = await InstaParser.videoUrlFromPost('${_postUrlController.text}');
-
-                            // Divider
-                            _widgetsList.add(
-                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                    child: Divider(height: 0.0, color: Colors.black)
-                                )
-                            );
-
-                            // Video URL
-                            _widgetsList.add(Text('Video:', style: _textStyleBold));
-                            _widgetsList.add(
-                                GestureDetector(
-                                    child: Text('$_videoUrl\n', style: _textStyleUrl,),
-                                    onTap: () async {
-                                      setState(() {});
-                                      Clipboard.setData(ClipboardData(text: '$_videoUrl'));
-                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied video url")));
-                                    }
-                                )
-                            );
-
-                            setState(() => _parsedWidgets = _widgetsList);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+//                  Row( // Photos and video submit button
+//                    mainAxisSize: MainAxisSize.min,
+//                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+//                    children: <Widget>[
+//
+//                      Container( // Parse photos
+//                        width: 160,
+//                        padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 16.0),
+//                        child: RaisedButton(
+//                          child: Text('Get photos', style: _textStyleUrl,),
+//                          onPressed: () async {
+//
+//                            List<Widget> _widgetsList = [];
+//                            Map<String, String> photosUrls = await InstaParser.photoUrlsFromPost('${_postUrlController.text}');
+//
+//                            // Divider
+//                            _widgetsList.add(
+//                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+//                                    child: Divider(height: 0.0, color: Colors.black)
+//                                )
+//                            );
+//
+//                            // Small photo URL
+//                            _widgetsList.add(Text('Small photo:', style: _textStyleBold));
+//                            _widgetsList.add(
+//                                GestureDetector(
+//                                    child: Text('${photosUrls['small'] != null ? photosUrls['small'] : ''}', style: _textStyleUrl,),
+//                                    onTap: () async {
+//                                      setState(() {});
+//                                      Clipboard.setData(ClipboardData(text: '${photosUrls['small']}'));
+//                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied small size photo url")));
+//                                    }
+//                                )
+//                            );
+//                            if (photosUrls['small'] != null) {
+//                              _widgetsList.add(
+//                                  Image.network(photosUrls['small'])
+//                              );
+//                            }
+//
+//                            // Divider
+//                            _widgetsList.add(
+//                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+//                                    child: Divider(height: 0.0, color: Colors.black)
+//                                )
+//                            );
+//
+//                            // Medium photo URL
+//                            _widgetsList.add(Text('Medium photo:', style: _textStyleBold));
+//                            _widgetsList.add(
+//                                GestureDetector(
+//                                    child: Text('${photosUrls['medium'] != null ? photosUrls['medium'] : ''}', style: _textStyleUrl,),
+//                                    onTap: () async {
+//                                      setState(() {});
+//                                      Clipboard.setData(ClipboardData(text: '${photosUrls['medium']}'));
+//                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied medium size photo url")));
+//                                    }
+//                                )
+//                            );
+//                            if (photosUrls['medium'] != null) {
+//                              _widgetsList.add(
+//                                  Image.network(photosUrls['medium'])
+//                              );
+//                            }
+//
+//                            // Divider
+//                            _widgetsList.add(
+//                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+//                                    child: Divider(height: 0.0, color: Colors.black)
+//                                )
+//                            );
+//
+//                            // Large photo URL
+//                            _widgetsList.add(Text('Large photo:', style: _textStyleBold));
+//                            _widgetsList.add(
+//                                GestureDetector(
+//                                    child: Text('${photosUrls['large'] != null ? photosUrls['large'] : ''}', style: _textStyleUrl,),
+//                                    onTap: () async {
+//                                      setState(() {});
+//                                      Clipboard.setData(ClipboardData(text: '${photosUrls['large']}'));
+//                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied large size photo url")));
+//                                    }
+//                                )
+//                            );
+//                            if (photosUrls['large'] != null) {
+//                              _widgetsList.add(
+//                                  Image.network(photosUrls['large'])
+//                              );
+//                            }
+//
+//                            setState(() => _parsedWidgets = _widgetsList);
+//                          },
+//                        ),
+//                      ),
+//
+//                      Container( // Parse video
+//                        width: 128,
+//                        padding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 16.0),
+//                        child: RaisedButton(
+//                          child: Text('Get video', style: _textStyleUrl,),
+//                          onPressed: () async {
+//                            List<Widget> _widgetsList = [];
+//                            String _videoUrl = await InstaParser.videoUrlFromPost('${_postUrlController.text}');
+//
+//                            // Divider
+//                            _widgetsList.add(
+//                                Container(padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+//                                    child: Divider(height: 0.0, color: Colors.black)
+//                                )
+//                            );
+//
+//                            // Video URL
+//                            _widgetsList.add(Text('Video:', style: _textStyleBold));
+//                            _widgetsList.add(
+//                                GestureDetector(
+//                                    child: Text('$_videoUrl\n', style: _textStyleUrl,),
+//                                    onTap: () async {
+//                                      setState(() {});
+//                                      Clipboard.setData(ClipboardData(text: '$_videoUrl'));
+//                                      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Copied video url")));
+//                                    }
+//                                )
+//                            );
+//
+//                            setState(() => _parsedWidgets = _widgetsList);
+//                          },
+//                        ),
+//                      ),
+//                    ],
+//                  ),
 
                   Column(children: _parsedWidgets),
                 ]

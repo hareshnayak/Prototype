@@ -12,8 +12,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:prototype/instaPage.dart';
+
 
 class Chat extends StatelessWidget {
   final String peerId;
@@ -276,28 +278,37 @@ class ChatScreenState extends State<ChatScreen> {
                       right: 10.0),
                 )
               else
-                FlatButton(
-                  child: Container(
-                    child: Text(
-                      document['content'],
-                      style: TextStyle(color: primaryColor),
-                    ),
-                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                    width: 200.0,
-                    decoration: BoxDecoration(
-                        color: greyColor2, borderRadius: BorderRadius.circular(8.0)),
-                    margin: EdgeInsets.only(
-                        bottom: isLastMessageRight(index) ? 20.0 : 10.0, right: 10.0),
-                  ),
-                  onPressed:(){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => InstaParserExampleApp(),
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      FlatButton(child: Text('FOLLOW'),
+                        onPressed: () {
+                          var url = 'https://www.instagram.com/accounts/login/?next=%2F${document['content']}%2F&source=follow';
+                          launch(url);
+                        },
                       ),
-                    );
-                  },
-                )
+                      FlatButton(
+                          child: Text(document['content'],),
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                builder: (context) => InstaParserExampleApp(username: document['content']),
+                              ),
+                            );
+                          }
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                  width: 200.0,
+                  decoration: BoxDecoration(
+                      color: greyColor2,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  margin: EdgeInsets.only(
+                      bottom: isLastMessageRight(index) ? 20.0 : 10.0,
+                      right: 10.0),
+                ),
         ],
         mainAxisAlignment: MainAxisAlignment.end,
       );
@@ -335,101 +346,112 @@ class ChatScreenState extends State<ChatScreen> {
                     : Container(width: 35.0),
                 if (document['type'] == 0)
                   Container(
-                  child: Text(
-                    document['content'],
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                  width: 200.0,
-                  decoration: BoxDecoration(color: primaryColor,
-                      borderRadius: BorderRadius.circular(8.0)),
-                  margin: EdgeInsets.only(left: 10.0),
-                )
-                  else if (document['type'] == 1)
-                    Container(
-                  child: FlatButton(
-                    child: Material(
-                      child: CachedNetworkImage(
-                        placeholder: (context, url) =>
-                            Container(
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    themeColor),
-                              ),
-                              width: 200.0,
-                              height: 200.0,
-                              padding: EdgeInsets.all(70.0),
-                              decoration: BoxDecoration(
-                                color: greyColor2,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                ),
-                              ),
-                            ),
-                        errorWidget: (context, url, error) =>
-                            Material(
-                              child: Image.asset(
-                                'images/img_not_available.jpeg',
-                                width: 200.0,
-                                height: 200.0,
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
-                              clipBehavior: Clip.hardEdge,
-                            ),
-                        imageUrl: document['content'],
-                        width: 200.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                      clipBehavior: Clip.hardEdge,
+                    child: Text(
+                      document['content'],
+                      style: TextStyle(color: Colors.white),
                     ),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) =>
-                              FullPhoto(url: document['content'])));
-                    },
-                    padding: EdgeInsets.all(0),
-                  ),
-                  margin: EdgeInsets.only(left: 10.0),
-                )
-                    else if (document['type'] == 2)
-                      Container(
-                  child: Image.asset(
-                    'images/${document['content']}.gif',
-                    width: 100.0,
-                    height: 100.0,
-                    fit: BoxFit.cover,
-                  ),
-                  margin: EdgeInsets.only(
-                      bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                      right: 10.0),
-                )
+                    padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                    width: 200.0,
+                    decoration: BoxDecoration(color: primaryColor,
+                        borderRadius: BorderRadius.circular(8.0)),
+                    margin: EdgeInsets.only(left: 10.0),
+                  )
                 else
-                    FlatButton(
-                      child: Container(
-                        child: Text(
-                          document['content'],
-                          style: TextStyle(color: Colors.white),
+                  if (document['type'] == 1)
+                    Container(
+                      child: FlatButton(
+                        child: Material(
+                          child: CachedNetworkImage(
+                            placeholder: (context, url) =>
+                                Container(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        themeColor),
+                                  ),
+                                  width: 200.0,
+                                  height: 200.0,
+                                  padding: EdgeInsets.all(70.0),
+                                  decoration: BoxDecoration(
+                                    color: greyColor2,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) =>
+                                Material(
+                                  child: Image.asset(
+                                    'images/img_not_available.jpeg',
+                                    width: 200.0,
+                                    height: 200.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                ),
+                            imageUrl: document['content'],
+                            width: 200.0,
+                            height: 200.0,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) =>
+                                  FullPhoto(url: document['content'])));
+                        },
+                        padding: EdgeInsets.all(0),
+                      ),
+                      margin: EdgeInsets.only(left: 10.0),
+                    )
+                  else
+                    if (document['type'] == 2)
+                      Container(
+                        child: Image.asset(
+                          'images/${document['content']}.gif',
+                          width: 100.0,
+                          height: 100.0,
+                          fit: BoxFit.cover,
+                        ),
+                        margin: EdgeInsets.only(
+                            bottom: isLastMessageRight(index) ? 20.0 : 10.0,
+                            right: 10.0),
+                      )
+                    else
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            FlatButton(
+                              child: Text('FOLLOW'),
+                              onPressed: () {
+                                var url = 'https://www.instagram.com/accounts/login/?next=%2F${document['content']}%2F&source=follow';
+                                launch(url);
+                                },
+                            ),
+                            FlatButton(
+                              child: Text(document['content'],),
+                              onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                    builder: (context) => InstaParserExampleApp(username: document['content']),
+                                  ),
+                                );
+                              }
+                            ),
+
+                          ],
                         ),
                         padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                         width: 200.0,
-                        decoration: BoxDecoration(color: primaryColor,
+                        decoration: BoxDecoration(color: Colors.white,
                             borderRadius: BorderRadius.circular(8.0)),
                         margin: EdgeInsets.only(left: 10.0),
                       ),
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => InstaParserExampleApp(),
-                          ),
-                        );
-                      }
-                    ),
               ],
             ),
 
@@ -663,8 +685,8 @@ class ChatScreenState extends State<ChatScreen> {
               margin: EdgeInsets.symmetric(horizontal: 1.0),
               child: IconButton(
                 icon: Image.asset('images/instagramw.png'),
-                onPressed: (){
-                  onSendMessage('https://www.instagram.com/contreirasgustavo/', 3);
+                onPressed: () {
+                  onSendMessage('himeshnayak.8', 3); //content = username
                 },
               ),
             ),
