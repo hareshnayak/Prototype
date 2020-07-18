@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:prototype/widget/navDrawer.dart';
 class SearchActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class SearchPage extends StatelessWidget {
                                 hintText: "Search",
                                 enabledBorder: new UnderlineInputBorder(
                                   borderSide:
-                                      new BorderSide(color: Colors.transparent),
+                                  new BorderSide(color: Colors.transparent),
                                 ),
                               ),
                             ),
