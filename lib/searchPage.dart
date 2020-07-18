@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 80,
+                        height:60,
                       ),
                     ],
                   ),
@@ -125,12 +125,45 @@ class _SearchPageState extends State<SearchPage> {
                 child: Row(
                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Filter(),
-                        Sortby(),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        child: Filter(),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        child: Sortby(),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
+               for (int j = 0; j < 3; j++)
+              Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+                child: Container(
+                  child: Card(
+                    child: ListTile(
+                      title: Text('XYZ Academy'),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            'https://wallpapercave.com/wp/PvKBonY.jpg'),
+                      ),
+                      subtitle: Row(
+                        children: <Widget>[
+                          for (int i = 0;
+                              i < ((j == 1) ? 3 : ((j == 2) ? 4 : 5));
+                              i++)
+                            Icon(Icons.star, color: Colors.amber),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -160,7 +193,7 @@ class _Sortby extends State<Sortby> {
               dropdownValue = newValue;
             });
           },
-          items: <String>['Sort By', 'One', 'Two', 'Free', 'Four']
+          items: <String>['Sort By', 'Fees', 'Reviews']
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -202,7 +235,7 @@ class _Filter extends State<Filter> {
               dropdownValue = newValue;
             });
           },
-          items: <String>['Filter', 'One', 'Two', 'Free', 'Four']
+          items: <String>['Filter', 'Full','Week']
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
