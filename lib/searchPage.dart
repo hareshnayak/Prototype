@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prototype/widget/navDrawer.dart';
+
 class SearchActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,12 +21,14 @@ class SearchActivity extends StatelessWidget {
 class SearchPage extends StatefulWidget {
 //       GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   SearchPage({Key key}) : super(key: key);
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
   String dropdownValue = 'One';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,98 +123,101 @@ class _SearchPageState extends State<SearchPage> {
 //               ),
               child: Center(
                 child: Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Filter(),
-                    Spacer(),
-                    Sortby(),
-                      ],
-                    ),
-               
-            
+                    Filter(),
+                        Sortby(),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
-    ),],),),);
+    );
   }
-}              
-                            
+}
 
-class Sortby extends StatefulWidget{
+class Sortby extends StatefulWidget {
   @override
   _Sortby createState() => _Sortby();
 }
 
-class _Sortby extends State<Sortby>{
-    String dropdownValue = 'Sort By';
+class _Sortby extends State<Sortby> {
+  String dropdownValue = 'Sort By';
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Stack(
-                      children: <Widget>[
-                        DropdownButton<String>(
-                          value: dropdownValue,
-                          iconSize: 24,
-                          elevation: 16,                          
-                          style: TextStyle(color: Colors.deepPurple),                         
-                          onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                            });
-                          },
-                          items: <String>['Sort By','One', 'Two', 'Free', 'Four']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                                child: Text("$value"),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Icon(Icons.sort),
-                        ),],);
+      children: <Widget>[
+        DropdownButton<String>(
+          value: dropdownValue,
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: Colors.deepPurple),
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+            });
+          },
+          items: <String>['Sort By', 'One', 'Two', 'Free', 'Four']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Text("$value"),
+              ),
+            );
+          }).toList(),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          child: Icon(Icons.sort),
+        ),
+      ],
+    );
   }
 }
-class Filter extends StatefulWidget{
+
+class Filter extends StatefulWidget {
   @override
   _Filter createState() => _Filter();
 }
 
-class _Filter extends State<Filter>{
-    String dropdownValue = 'Filter';
+class _Filter extends State<Filter> {
+  String dropdownValue = 'Filter';
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Stack(
-                      children: <Widget>[
-                        DropdownButton<String>(
-                          value: dropdownValue,
-                          iconSize: 24,
-                          elevation: 16,                          
-                          style: TextStyle(color: Colors.deepPurple),                         
-                          onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                            });
-                          },
-                          items: <String>['Filter','One', 'Two', 'Free', 'Four']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                                child: Text("$value"),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          child: Icon(Icons.filter_list),
-                        ),],);
+      children: <Widget>[
+        DropdownButton<String>(
+          value: dropdownValue,
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: Colors.deepPurple),
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+            });
+          },
+          items: <String>['Filter', 'One', 'Two', 'Free', 'Four']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Text("$value"),
+              ),
+            );
+          }).toList(),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10),
+          child: Icon(Icons.filter_list),
+        ),
+      ],
+    );
   }
 }

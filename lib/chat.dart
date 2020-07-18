@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:prototype/instaPage.dart';
-
+import 'package:insta_html_parser/insta_html_parser.dart';
 
 class Chat extends StatelessWidget {
   final String peerId;
@@ -289,11 +289,13 @@ class ChatScreenState extends State<ChatScreen> {
                       ),
                       FlatButton(
                           child: Text(document['content'],),
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.push(
                               context,
                               new MaterialPageRoute(
-                                builder: (context) => InstaParserExampleApp(username: document['content']),
+                                builder: (context) =>
+                                    InstaParserExampleApp(
+                                        username: document['content']),
                               ),
                             );
                           }
@@ -430,18 +432,20 @@ class ChatScreenState extends State<ChatScreen> {
                               onPressed: () {
                                 var url = 'https://www.instagram.com/accounts/login/?next=%2F${document['content']}%2F&source=follow';
                                 launch(url);
-                                },
+                              },
                             ),
                             FlatButton(
-                              child: Text(document['content'],),
-                              onPressed: (){
-                                Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                    builder: (context) => InstaParserExampleApp(username: document['content']),
-                                  ),
-                                );
-                              }
+                                child: Text(document['content'],),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                      builder: (context) =>
+                                          InstaParserExampleApp(
+                                              username: document['content']),
+                                    ),
+                                  );
+                                }
                             ),
 
                           ],
@@ -507,6 +511,164 @@ class ChatScreenState extends State<ChatScreen> {
     }
 
     return Future.value(false);
+  }
+
+
+  //final _formKey = new GlobalKey<FormState>();
+
+  //String _instaUsername;
+  //String _instaPostUrl;
+  TextEditingController instaUsername = new TextEditingController();
+  TextEditingController instaPostUrl = new TextEditingController();
+
+//  bool validateAndSave() {
+//    final form = _formKey.currentState;
+//    if (form.validate()) {
+//      form.save();
+//      return true;
+//    }
+//    return false;
+//  }
+//
+//  void validateAndSubmit() async {
+//    if (validateAndSave()) {
+//      try {
+//        Map<String, String> _userData = await InstaParser.userDataFromProfile('https://instagram.com/$_instaUsername');
+//        print(_userData['isPrivate'] != null ? _userData['isPrivate'] : '');
+//        onSendMessage('$_instaUsername : $_instaPostUrl' , 3);
+//      } catch (e) {
+//        print('Error: $e');
+//        setState(() {
+//          _formKey.currentState.reset();
+//        });
+//      }
+//    }
+//  }
+
+//  void resetForm() {
+//    _formKey.currentState.reset();
+//  }
+
+  Future<Null> openDialog() async {
+    switch (await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            contentPadding: EdgeInsets.only(
+                left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+            children: <Widget>[
+              Container(
+                color: themeColor,
+                margin: EdgeInsets.all(0.0),
+                padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
+                //height: 100.0,
+//                child: new Form(
+//                  key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      'Share Instagram Post',
+                      style: TextStyle(color: Colors.white,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    new TextFormField(
+                      maxLines: 1,
+                      keyboardType: TextInputType.emailAddress,
+                      autofocus: false,
+                      controller: instaUsername,
+                      decoration: new InputDecoration(
+                        hintText: 'Username',
+                        icon: Icon(Icons.account_circle, color: Colors.grey),
+                      ),
+                      validator: (value) =>
+                      value.isEmpty
+                          ? 'Please Write Your Acount Username'
+                          : null,
+//                      onSaved: (value) => _instaUsername = value.trim(),
+                    ),
+                    new TextFormField(
+                      maxLines: 1,
+                      keyboardType: TextInputType.emailAddress,
+                      autofocus: false,
+                      controller: instaPostUrl,
+                      decoration: new InputDecoration(
+                        hintText: 'Post URL',
+                        icon: Icon(Icons.assignment, color: Colors.grey),
+                      ),
+                      validator: (value) =>
+                      value.isEmpty
+                          ? 'Please Enter a valid post url'
+                          : null,
+//                      onSaved: (value) => _instaPostUrl = value.trim(),
+                    ),
+                  ],
+//                ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SimpleDialogOption(
+                    onPressed: () {
+                      Navigator.pop(context, 0);
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Icon(
+                            Icons.cancel,
+                            color: primaryColor,
+                          ),
+                        ),
+                        Text(
+                          'Cancel',
+                          style: TextStyle(
+                              color: primaryColor, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                  SimpleDialogOption(
+                    onPressed: () async {
+                      Map<String, String> _userData = await InstaParser
+                          .userDataFromProfile(
+                          'https://instagram.com/${instaUsername.text}');
+                      print(_userData['isPrivate'] != null
+                          ? _userData['isPrivate']
+                          : '');
+                      print('${instaUsername.text} : ${instaPostUrl.text}');
+                      onSendMessage(
+                          '${instaUsername.text} : ${instaPostUrl.text}', 3);
+                      Navigator.pop(context, 0);
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Icon(
+                            Icons.check_circle,
+                            color: primaryColor,
+                          ),
+                        ),
+                        Text(
+                          'Send Post',
+                          style: TextStyle(
+                              color: primaryColor, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          );
+        })) {
+      case 0:
+        break;
+      case 1:
+        exit(0);
+        break;
+    }
   }
 
   @override
@@ -686,7 +848,7 @@ class ChatScreenState extends State<ChatScreen> {
               child: IconButton(
                 icon: Image.asset('images/instagramw.png'),
                 onPressed: () {
-                  onSendMessage('himeshnayak.8', 3); //content = username
+                  openDialog();
                 },
               ),
             ),
