@@ -189,6 +189,9 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  String username = '';
+  String postUrl = '';
+
   Widget buildItem(int index, DocumentSnapshot document) {
     if (document['idFrom'] == id) {
       // Right (my message)
@@ -277,29 +280,36 @@ class ChatScreenState extends State<ChatScreen> {
                       bottom: isLastMessageRight(index) ? 20.0 : 10.0,
                       right: 10.0),
                 )
-              else
+    else
                 Container(
                   child: Column(
                     children: <Widget>[
                       FlatButton(child: Text('FOLLOW'),
                         onPressed: () {
-                          var url = 'https://www.instagram.com/accounts/login/?next=%2F${document['content']}%2F&source=follow';
+                        int i;
+                        for (i = 0; document['content'][i] != ':'; i++)
+                          username += document['content'][i];
+                        i++;
+                        for (; i < document['content'].length; i++)
+                          postUrl += document['content'][i];
+                        var url = 'https://www.instagram.com/accounts/login/?next=%2F$username%2F&source=follow';
                           launch(url);
                         },
                       ),
-                      FlatButton(
-                          child: Text(document['content'],),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                builder: (context) =>
-                                    InstaParserExampleApp(
-                                        username: document['content']),
-                              ),
-                            );
-                          }
-                      ),
+                      Image.network(postUrl),
+//                      FlatButton(
+//                          child: Text(document['content'],),
+//                          onPressed: () {
+//                            Navigator.push(
+//                              context,
+//                              new MaterialPageRoute(
+//                                builder: (context) =>
+//                                    InstaParserExampleApp(
+//                                        username: document['content']),
+//                              ),
+//                            );
+//                          }
+//                      ),
                     ],
                   ),
                   padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
@@ -427,26 +437,33 @@ class ChatScreenState extends State<ChatScreen> {
                       Container(
                         child: Column(
                           children: <Widget>[
-                            FlatButton(
-                              child: Text('FOLLOW'),
+                            FlatButton(child: Text('FOLLOW'),
                               onPressed: () {
-                                var url = 'https://www.instagram.com/accounts/login/?next=%2F${document['content']}%2F&source=follow';
-                                launch(url);
+//                                int i;
+//                                for (i = 0; document['content'][i] != ':'; i++)
+//                                  username += document['content'][i];
+//                                i++;
+//                                for (; i < document['content'].length; i++)
+                                  postUrl += document['content'];
+                                //var url = 'https://www.instagram.com/accounts/login/?next=%2F$username%2F&source=follow';
+                                //launch(url);
+                                print(postUrl);
                               },
                             ),
-                            FlatButton(
-                                child: Text(document['content'],),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                      builder: (context) =>
-                                          InstaParserExampleApp(
-                                              username: document['content']),
-                                    ),
-                                  );
-                                }
-                            ),
+                            Image.network(document['content']),
+//                            FlatButton(
+//                                child: Text(document['content'],),
+//                                onPressed: () {
+//                                  Navigator.push(
+//                                    context,
+//                                    new MaterialPageRoute(
+//                                      builder: (context) =>
+//                                          InstaParserExampleApp(
+//                                              username: document['content']),
+//                                    ),
+//                                  );
+//                                }
+//                            ),
 
                           ],
                         ),
@@ -516,8 +533,8 @@ class ChatScreenState extends State<ChatScreen> {
 
   //final _formKey = new GlobalKey<FormState>();
 
-  //String _instaUsername;
-  //String _instaPostUrl;
+  String _instaUsername;
+  String _instaPostUrl;
   TextEditingController instaUsername = new TextEditingController();
   TextEditingController instaPostUrl = new TextEditingController();
 
@@ -585,7 +602,7 @@ class ChatScreenState extends State<ChatScreen> {
                       value.isEmpty
                           ? 'Please Write Your Acount Username'
                           : null,
-//                      onSaved: (value) => _instaUsername = value.trim(),
+                      onSaved: (value) => _instaUsername = instaUsername.text.toString(),
                     ),
                     new TextFormField(
                       maxLines: 1,
@@ -600,7 +617,7 @@ class ChatScreenState extends State<ChatScreen> {
                       value.isEmpty
                           ? 'Please Enter a valid post url'
                           : null,
-//                      onSaved: (value) => _instaPostUrl = value.trim(),
+                      onSaved: (value) => _instaPostUrl = instaPostUrl.text.toString(),
                     ),
                   ],
 //                ),
@@ -631,16 +648,21 @@ class ChatScreenState extends State<ChatScreen> {
                   ),
                   SimpleDialogOption(
                     onPressed: () async {
-                      Map<String, String> _userData = await InstaParser
-                          .userDataFromProfile(
-                          'https://instagram.com/${instaUsername.text}');
-                      print(_userData['isPrivate'] != null
-                          ? _userData['isPrivate']
-                          : '');
-                      print('${instaUsername.text} : ${instaPostUrl.text}');
-                      onSendMessage(
-                          '${instaUsername.text} : ${instaPostUrl.text}', 3);
-                      Navigator.pop(context, 0);
+                      if (instaPostUrl.text.toString() != null && instaUsername.text.toString() != null)
+                        {
+                          print('${instaUsername.text.toString()}:${instaPostUrl.text.toString()}');
+                          Map<String, String> photosUrls = await InstaParser.photoUrlsFromPost('${instaPostUrl.text.toString()}');
+                          if (photosUrls['small']!= null)
+                            {
+                              onSendMessage(
+                              '${photosUrls['small']}', 3);
+                            }
+                          Navigator.pop(context, 0);
+                        }
+                      else{
+                        print('text is null');
+
+                      }
                     },
                     child: Row(
                       children: <Widget>[
