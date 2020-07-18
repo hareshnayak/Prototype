@@ -17,9 +17,15 @@ class SearchActivity extends StatelessWidget {
   }
 }
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
 //       GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  SearchPage({Key key}) : super(key: key);
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
 
+class _SearchPageState extends State<SearchPage> {
+  String dropdownValue = 'One';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +91,7 @@ class SearchPage extends StatelessWidget {
                                 hintText: "Search",
                                 enabledBorder: new UnderlineInputBorder(
                                   borderSide:
-                                  new BorderSide(color: Colors.transparent),
+                                      new BorderSide(color: Colors.transparent),
                                 ),
                               ),
                             ),
@@ -108,16 +114,104 @@ class SearchPage extends StatelessWidget {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-              height: 130,
+              height: 80,
+//               decoration: BoxDecoration(
+//                 border: Border.all(),
+//               ),
               child: Center(
                 child: Row(
-                  children: <Widget>[],
-                ),
-              ),
-            ),
+//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        Filter(),
+                    Spacer(),
+                    Sortby(),
+                      ],
+                    ),
+               
+            
           ],
         ),
       ),
-    );
+    ),],),),);
+  }
+}              
+                            
+
+class Sortby extends StatefulWidget{
+  @override
+  _Sortby createState() => _Sortby();
+}
+
+class _Sortby extends State<Sortby>{
+    String dropdownValue = 'Sort By';
+  @override
+  Widget build(BuildContext context){
+    return Stack(
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: dropdownValue,
+                          iconSize: 24,
+                          elevation: 16,                          
+                          style: TextStyle(color: Colors.deepPurple),                         
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                            });
+                          },
+                          items: <String>['Sort By','One', 'Two', 'Free', 'Four']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                                child: Text("$value"),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Icon(Icons.sort),
+                        ),],);
+  }
+}
+class Filter extends StatefulWidget{
+  @override
+  _Filter createState() => _Filter();
+}
+
+class _Filter extends State<Filter>{
+    String dropdownValue = 'Filter';
+  @override
+  Widget build(BuildContext context){
+    return Stack(
+                      children: <Widget>[
+                        DropdownButton<String>(
+                          value: dropdownValue,
+                          iconSize: 24,
+                          elevation: 16,                          
+                          style: TextStyle(color: Colors.deepPurple),                         
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                            });
+                          },
+                          items: <String>['Filter','One', 'Two', 'Free', 'Four']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                                child: Text("$value"),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: Icon(Icons.filter_list),
+                        ),],);
   }
 }
