@@ -217,11 +217,15 @@ class ChatScreenState extends State<ChatScreen> {
       int i;
       for (i = 0; document['content'][i] != ':'; i++)
         username += document['content'][i];
-      for (i++; i < document['content'].length; i++)
-        postUrl += document['content'][i];
-
-      print('username : $username');
-      print('post Url : $postUrl');
+      for (i++; i < document['content'].length; i++) {
+        if (document['content'][i] == 't' && document['content'][i+1] == 'v' && document['content'][i+2] == '/') {
+          postUrl += 'p';
+          i++;
+        }
+        else postUrl += document['content'][i];
+      }
+          print('username : $username');
+          print('post Url : $postUrl');
     }
 
     if (document['idFrom'] == id) {
