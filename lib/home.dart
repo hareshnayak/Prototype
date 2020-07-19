@@ -112,10 +112,11 @@ class HomeScreenState extends State<HomeScreen> {
 //        payload: 'item x');
   }
 
-//  Future<bool> onBackPress() {
-//    openDialog();
-//    return Future.value(false);
-//  }
+  Future<bool> onBackPress() {
+    Navigator.of(context)
+        .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyApp()), (Route<dynamic> route) => false);
+    return Future.value(false);
+  }
 
   Future<Null> handleSignOut() async {
     this.setState(() {
@@ -201,7 +202,7 @@ class HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
-        //onWillPop: onBackPress,
+        onWillPop: onBackPress,
       ),
     );
   }

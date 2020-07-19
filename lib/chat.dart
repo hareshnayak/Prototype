@@ -17,16 +17,21 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:prototype/instaPage.dart';
 import 'package:insta_html_parser/insta_html_parser.dart';
 
+import 'package:prototype/main.dart';
+
 class Chat extends StatelessWidget {
   final String peerId;
   final String peerAvatar;
 
-  Chat({Key key, @required this.peerId, @required this.peerAvatar})
+  Chat({Key key, @required this.peerId, @required this.peerAvatar, this.scaffoldKey})
       : super(key: key);
+
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text(
           'CHAT',
@@ -77,6 +82,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+
     focusNode.addListener(onFocusChange);
 
     groupChatId = '';
@@ -189,10 +195,36 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  String username = '';
-  String postUrl = '';
+  void deleteChat()
+  {
+    Firestore.instance.collection('messages')
+        .document(groupChatId)
+        .collection(groupChatId)
+        .getDocuments()
+        .then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.documents) {
+        doc.reference.delete();
+      }});
+  }
 
   Widget buildItem(int index, DocumentSnapshot document) {
+    String username = '';
+    String postUrl = '';
+
+    if (document['type'] == 3)
+    {
+      print('content : ${document['content']}');
+      int i;
+      for (i = 0; document['content'][i] != ':'; i++)
+        username+= document['content'][i];
+      for (i++; i < document['content'].length; i++)
+        postUrl += document['content'][i];
+
+      print('username : $username');
+      print('post Url : $postUrl');
+
+    }
+
     if (document['idFrom'] == id) {
       // Right (my message)
       return Row(
@@ -284,19 +316,59 @@ class ChatScreenState extends State<ChatScreen> {
                 Container(
                   child: Column(
                     children: <Widget>[
+                      Text(username),
                       FlatButton(child: Text('FOLLOW'),
                         onPressed: () {
-                        int i;
-                        for (i = 0; document['content'][i] != ':'; i++)
-                          username += document['content'][i];
-                        i++;
-                        for (; i < document['content'].length; i++)
-                          postUrl += document['content'][i];
                         var url = 'https://www.instagram.com/accounts/login/?next=%2F$username%2F&source=follow';
                           launch(url);
                         },
                       ),
-                      Image.network(postUrl),
+                      FlatButton(
+                        child: Material(
+                          child: CachedNetworkImage(
+                            placeholder: (context, url) =>
+                                Container(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        themeColor),
+                                  ),
+                                  width: 200.0,
+                                  height: 200.0,
+                                  padding: EdgeInsets.all(70.0),
+                                  decoration: BoxDecoration(
+                                    color: greyColor2,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) =>
+                                Material(
+                                  child: Image.asset(
+                                    'images/img_not_available.jpeg',
+                                    width: 200.0,
+                                    height: 200.0,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                ),
+                            imageUrl: postUrl,
+                            width: 200.0,
+                            height: 200.0,
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          clipBehavior: Clip.hardEdge,
+                        ),
+                        onPressed: () {
+                          launch(postUrl);
+                        },
+                        padding: EdgeInsets.all(0),
+                      ),
+
 //                      FlatButton(
 //                          child: Text(document['content'],),
 //                          onPressed: () {
@@ -437,20 +509,58 @@ class ChatScreenState extends State<ChatScreen> {
                       Container(
                         child: Column(
                           children: <Widget>[
+                            Text(username),
                             FlatButton(child: Text('FOLLOW'),
                               onPressed: () {
-//                                int i;
-//                                for (i = 0; document['content'][i] != ':'; i++)
-//                                  username += document['content'][i];
-//                                i++;
-//                                for (; i < document['content'].length; i++)
-                                  postUrl += document['content'];
-                                //var url = 'https://www.instagram.com/accounts/login/?next=%2F$username%2F&source=follow';
-                                //launch(url);
-                                print(postUrl);
-                              },
+                                var url = 'https://www.instagram.com/accounts/login/?next=%2F$username%2F&source=follow';
+                                launch(url);
+                                },
                             ),
-                            Image.network(document['content']),
+                            FlatButton(
+                              child: Material(
+                                child: CachedNetworkImage(
+                                  placeholder: (context, url) =>
+                                      Container(
+                                        child: CircularProgressIndicator(
+                                          valueColor: AlwaysStoppedAnimation<Color>(
+                                              themeColor),
+                                        ),
+                                        width: 200.0,
+                                        height: 200.0,
+                                        padding: EdgeInsets.all(70.0),
+                                        decoration: BoxDecoration(
+                                          color: greyColor2,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0),
+                                          ),
+                                        ),
+                                      ),
+                                  errorWidget: (context, url, error) =>
+                                      Material(
+                                        child: Image.asset(
+                                          'images/img_not_available.jpeg',
+                                          width: 200.0,
+                                          height: 200.0,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0),
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
+                                      ),
+                                  imageUrl: postUrl,
+                                  width: 200.0,
+                                  height: 200.0,
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                clipBehavior: Clip.hardEdge,
+                              ),
+                              onPressed: () {
+                                launch(postUrl);
+                              },
+                              padding: EdgeInsets.all(0),
+                            ),
 //                            FlatButton(
 //                                child: Text(document['content'],),
 //                                onPressed: () {
@@ -650,18 +760,21 @@ class ChatScreenState extends State<ChatScreen> {
                     onPressed: () async {
                       if (instaPostUrl.text.toString() != null && instaUsername.text.toString() != null)
                         {
-                          print('${instaUsername.text.toString()}:${instaPostUrl.text.toString()}');
-                          Map<String, String> photosUrls = await InstaParser.photoUrlsFromPost('${instaPostUrl.text.toString()}');
-                          if (photosUrls['small']!= null)
-                            {
+                          print('Post Url : ${instaPostUrl.text.toString()}');
+                          String content = '';
+                          for(int i = 0; instaPostUrl.text.toString()[i] != '?'; i++)
+                          {
+                            content += instaPostUrl.text.toString()[i];
+                          }
+                          content += 'media/?size=t';
+                          print(content);
                               onSendMessage(
-                              '${photosUrls['small']}', 3);
-                            }
+                              '${instaUsername.text.toString()}:$content', 3);
                           Navigator.pop(context, 0);
                         }
                       else{
                         print('text is null');
-
+                        //scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Fill the Fields first")));
                       }
                     },
                     child: Row(
@@ -692,6 +805,8 @@ class ChatScreenState extends State<ChatScreen> {
         break;
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -899,6 +1014,17 @@ class ChatScreenState extends State<ChatScreen> {
               child: IconButton(
                 icon: Icon(Icons.send),
                 onPressed: () => onSendMessage(textEditingController.text, 0),
+                color: primaryColor,
+              ),
+            ),
+            color: Colors.white,
+          ),
+          Material(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => deleteChat(),
                 color: primaryColor,
               ),
             ),
