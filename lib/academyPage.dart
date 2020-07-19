@@ -313,25 +313,58 @@ class _AcademyState extends State<Academy> {
                     padding: EdgeInsets.all(0),
                     onPressed: () {},
                     child: Card(
-                      child: ListTile(
-                        title: Text(
-                          'Ratings and Reviews',
-                          textAlign: TextAlign.center,
-                        ),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            for (int i = 0; i < 5; i++)
-                              Icon(Icons.star, color: Colors.amber),
-                          ],
-                        ),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              FloatingActionButton(
+                                onPressed: () {},
+                                mini: true,
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                child:
+                                    Icon(Icons.call, color: Colors.deepPurple),
+                              ),
+                              FloatingActionButton(
+                                onPressed: () {},
+                                backgroundColor: Colors.transparent,
+                                mini: true,
+                                elevation: 0,
+                                child: Icon(Icons.directions,
+                                    color: Colors.deepPurple),
+                              ),
+                              FloatingActionButton(
+                                onPressed: () {},
+                                mini: true,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                                child: Icon(Icons.message,
+                                    color: Colors.deepPurple),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    '3.0',
+                                    style: TextStyle(fontSize: 23),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(0),
+                                    child: Icon(Icons.star,
+                                        color: Colors.amber, size: 25),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(0),
+                padding: EdgeInsets.symmetric(horizontal:10),
                 child: Container(
                   color: Colors.grey.shade300,
                   width: MediaQuery.of(context).size.width,
