@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prototype/academyPage.dart';
 import 'package:prototype/widget/navDrawer.dart';
 
 class SearchActivity extends StatelessWidget {
@@ -144,7 +145,7 @@ class _SearchPageState extends State<SearchPage> {
                for (int j = 0; j < 3; j++)
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
-                child: Container(
+                child: FlatButton(
                   child: Card(
                     child: ListTile(
                       title: Text('XYZ Academy'),
@@ -162,6 +163,7 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     ),
                   ),
+                  onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AcademyPage()),);}
                 ),
               ),
           ],
