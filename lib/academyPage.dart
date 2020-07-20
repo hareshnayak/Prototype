@@ -463,36 +463,35 @@ class _AcademyState extends State<Academy> {
                                   ],
                                 ),
                                 Spacer(),
-                                Text(
-                                  'Details',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
-                                  child: SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: FloatingActionButton(
-                                      heroTag: 'logoutBtn$j',
-                                      elevation: 0,
-//                                       shape: RoundedRectangleBorder(
-//                                             borderRadius: BorderRadius.all(
-//                                                 Radius.circular(7.0),),),
-                                      backgroundColor: Colors.transparent,
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) => LogoutOverlay(),
-                                        );
-                                      },
-                                      child: Icon(Icons.arrow_right,
-                                          size: 30, color: Colors.deepPurple),
-                                      mini: true,
+                                SizedBox(
+                                  width: 100,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => LogoutOverlay(),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 70,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            Text(
+                                              'Details',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                            Padding(
+                                                padding: EdgeInsets.all(0),
+                                                child: Icon(Icons.arrow_right,
+                                                    color: Colors.deepPurple)),
+                                          ]),
                                     ),
                                   ),
-                                ),
+                                ),                                                              
                               ],
                             ),
                           ),
